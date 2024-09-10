@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<script id="vertex-shader" type="x-shader/x-vertex">
+    #version 300 es
+
+    in vec4 aPosition;
+    uniform float uTheta;
+    uniform bool isSquare;
+    
+    void main()
+    {
+        float s = sin(uTheta);
+        float c = cos(uTheta);
+    
+        if (isSquare) {
+            float x = aPosition.x;
+            float y = aPosition.y - 0.5; 
+    
+            // Apply rotation
+            float xRot = c * x - s * y;
+            float yRot = s * x + c * y;
+    
+            // Translate back to original position
+            gl_Position.x = xRot;
+            gl_Position.y = yRot + 0.5;
+        } else {
+            // No rotation for other shapes
+            gl_Position.x = aPosition.x;
+            gl_Position.y = aPosition.y;
+        }
+    
+        gl_Position.z = 0.0;
+        gl_Position.w = 1.0;  
+    }    
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+precision mediump float;
+    
+uniform vec4 uColor; // Uniform variable for color
+    
+out vec4 fColor;
+    
+void main()
+{
+    fColor = uColor; 
+}
+</script>
+
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="Project01_03.js"></script>
+
+<body>    
+    <select id="Growth" size="3">
+        <option value="0">Sprout</option>
+        <option value="1">Grow</option>
+        <option value="2">Bloom</option>
+    </select>
+    
+    <canvas id="gl-canvas" width="512" height="512">
+    Oops ... your browser doesn't support the HTML5 canvas element
+    </canvas>
+</body>
+</html>
